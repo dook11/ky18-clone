@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结算页面 - 大锤印刷服务</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .checkout-steps {
+            display: flex;
+            margin-bottom: 30px;
+            padding: 0;
+            list-style: none;
+        }
+        .checkout-steps li {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            position: relative;
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+        .checkout-steps li.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .checkout-steps li:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -15px;
+            width: 0;
+            height: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            border-left: 15px solid #f8f9fa;
+            z-index: 2;
+        }
+        .checkout-steps li.active:after {
+            border-left: 15px solid var(--primary-color);
+        }
+        .checkout-steps li:last-child:after {
+            display: none;
+        }
+        .order-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .order-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .order-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #dee2e6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通知栏 -->
+    <div class="top-notice">
+        <div class="container">
+            <div class="notice-content">
+                查看我的订单
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主导航 -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="index.html">大锤印刷</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#mapModal">地图导航</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">关注公众号获得进度推送</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cart-link" href="#" data-toggle="modal" data-target="#cartModal">
+                                <i class="fa fa-shopping-cart"></i> 购物车 <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal">注册</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="container">
+            <h2 class="mb-4">订单结算</h2>
+            
+            <!-- 结算步骤 -->
+            <ul class="checkout-steps">
+                <li class="active">确认订单</li>
+                <li>填写地址</li>
+                <li>选择支付</li>
+                <li>上传文件</li>
+                <li>订单完成</li>
+            </ul>
+            
+            <div class="row">
+                <!-- 左侧订单信息 -->
+                <div class="col-lg-8">
+                    <div class="content-area mb-4">
+                        <h4>订单商品</h4>
+                        <div class="order-products">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>商品</th>
+                                        <th>规格参数</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>小计</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-items">
+                                    <!-- 订单项会通过JavaScript动态加载 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="address-form mt-4">
+                            <h4>收货信息</h4>
+                            <form id="addressForm">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="receiverName">收件人姓名</label>
+                                        <input type="text" class="form-control" id="receiverName" placeholder="请输入收件人姓名" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="receiverPhone">联系电话</label>
+                                        <input type="tel" class="form-control" id="receiverPhone" placeholder="请输入联系电话" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="receiverAddress">详细地址</label>
+                                    <textarea class="form-control" id="receiverAddress" rows="3" placeholder="请输入详细地址" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="orderRemark">订单备注</label>
+                                    <textarea class="form-control" id="orderRemark" rows="2" placeholder="选填，请输入订单备注"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 右侧订单摘要 -->
+                <div class="col-lg-4">
+                    <div class="order-summary">
+                        <h4>订单摘要</h4>
+                        <div id="summary-items">
+                            <!-- 订单摘要项会通过JavaScript动态加载 -->
+                        </div>
+                        <div class="order-total">
+                            <div class="d-flex justify-content-between">
+                                <span>商品总价：</span>
+                                <span id="total-price">¥0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>运费：</span>
+                                <span id="shipping-fee">¥0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>应付总额：</span>
+                                <span id="final-price" class="text-danger">¥0.00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    我已阅读并同意《印刷委托书》、《知识产权安全规范》和《印刷声明》
+                                </label>
+                            </div>
+                            <button class="btn btn-primary btn-lg btn-block" id="submitOrder">提交订单</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">Inteli @2025 | 开发及技术支持 : 大锤科技有限公司</p>
+                <p class="icp">粤ICP备xxxxxxxxx</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 各种模态框 -->
+    <!-- 登录和购物车模态框与其他页面相同，略 -->
+
+    <!-- JavaScript 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 从localStorage加载购物车数据
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            
+            // 如果购物车为空，跳转回首页
+            if (cartItems.length === 0) {
+                window.location.href = 'index.html';
+            }
+            
+            // 渲染订单商品
+            renderOrderItems(cartItems);
+            
+            // 渲染订单摘要
+            renderOrderSummary(cartItems);
+            
+            // 计算总价
+            calculateTotals(cartItems);
+            
+            // 提交订单事件
+            $('#submitOrder').on('click', function(e) {
+                e.preventDefault();
+                
+                // 表单验证
+                if (!$('#agreeTerms').prop('checked')) {
+                    showNotification('请阅读并同意相关协议');
+                    return;
+                }
+                
+                if (!$('#addressForm')[0].checkValidity()) {
+                    $('#addressForm')[0].reportValidity();
+                    return;
+                }
+                
+                // 模拟订单提交
+                showNotification('订单提交成功，即将跳转到支付页面...');
+                
+                // 清空购物车
+                localStorage.removeItem('cartItems');
+                
+                // 延迟后模拟跳转到支付页面
+                setTimeout(function() {
+                    // 实际应用中应该跳转到真实的支付页面
+                    window.location.href = 'index.html';
+                }, 3000);
+            });
+        });
+        
+        /**
+         * 渲染订单商品列表
+         */
+        function renderOrderItems(items) {
+            let html = '';
+            
+            items.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.options || '-'}</td>
+                        <td>¥${item.price.toFixed(2)}</td>
+                        <td>${item.quantity}</td>
+                        <td>¥${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            
+            $('#order-items').html(html);
+        }
+        
+        /**
+         * 渲染订单摘要
+         */
+        function renderOrderSummary(items) {
+            let html = '';
+            
+            items.forEach(item => {
+                html += `
+                    <div class="order-item">
+                        <div class="d-flex justify-content-between">
+                            <span>${item.name} × ${item.quantity}</span>
+                            <span>¥${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                        <div class="text-muted small">${item.options || ''}</div>
+                    </div>
+                `;
+            });
+            
+            $('#summary-items').html(html);
+        }
+        
+        /**
+         * 计算订单总价
+         */
+        function calculateTotals(items) {
+            // 计算商品总价
+            let subtotal = 0;
+            items.forEach(item => {
+                subtotal += item.price * item.quantity;
+            });
+            
+            // 设置运费（示例：订单满300免运费）
+            const shippingFee = subtotal >= 300 ? 0 : 20;
+            
+            // 计算最终价格
+            const finalPrice = subtotal + shippingFee;
+            
+            // 更新界面
+            $('#total-price').text('¥' + subtotal.toFixed(2));
+            $('#shipping-fee').text('¥' + shippingFee.toFixed(2));
+            $('#final-price').text('¥' + finalPrice.toFixed(2));
+        }
+    </script>
+</body>
+</html> 

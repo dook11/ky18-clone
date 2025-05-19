@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>普通单张彩页 - 大锤印刷服务</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .product-gallery img {
+            max-width: 100%;
+            border: 1px solid #dee2e6;
+            margin-bottom: 10px;
+        }
+        .product-thumbs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .product-thumbs img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+        }
+        .product-thumbs img.active {
+            border-color: var(--primary-color);
+        }
+        .product-options {
+            margin-bottom: 20px;
+        }
+        .option-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .option-group {
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .price-calculator {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .total-price {
+            font-size: 24px;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .product-description {
+            margin-top: 30px;
+        }
+        .description-tabs {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通知栏 -->
+    <div class="top-notice">
+        <div class="container">
+            <div class="notice-content">
+                查看我的订单
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主导航 -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="index.html">大锤印刷</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#mapModal">地图导航</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">关注公众号获得进度推送</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cart-link" href="#" data-toggle="modal" data-target="#cartModal">
+                                <i class="fa fa-shopping-cart"></i> 购物车 <span class="cart-count">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal">注册</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- 左侧分类导航 -->
+                <div class="col-lg-3">
+                    <div class="category-menu">
+                        <ul class="list-group">
+                            <li class="list-group-item category-item dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">单张彩卡</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item active" href="#">普通单张</a>
+                                    <a class="dropdown-item" href="#">异形单张</a>
+                                    <a class="dropdown-item" href="#">专业单张</a>
+                                    <a class="dropdown-item" href="#">对裱单张</a>
+                                    <a class="dropdown-item" href="#">对裱产品</a>
+                                    <a class="dropdown-item" href="#">长条单张</a>
+                                    <a class="dropdown-item" href="#">拼接单张</a>
+                                    <a class="dropdown-item" href="#">针孔线单张</a>
+                                    <a class="dropdown-item" href="#">翻书线单张</a>
+                                    <a class="dropdown-item" href="#">不干胶</a>
+                                    <a class="dropdown-item" href="#">来料加工</a>
+                                </div>
+                            </li>
+                            <!-- 其他分类项目 -->
+                            <li class="list-group-item category-item">
+                                <a href="#">单张产品</a>
+                            </li>
+                            <li class="list-group-item category-item">
+                                <a href="#">名片</a>
+                            </li>
+                            <li class="list-group-item category-item">
+                                <a href="#">折页</a>
+                            </li>
+                            <li class="list-group-item category-item">
+                                <a href="#">画册</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 右侧内容区 -->
+                <div class="col-lg-9">
+                    <div class="content-area">
+                        <!-- 产品详情 -->
+                        <div class="product-detail">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb bg-white pl-0">
+                                    <li class="breadcrumb-item"><a href="index.html">首页</a></li>
+                                    <li class="breadcrumb-item"><a href="#">单张彩卡</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">普通单张</li>
+                                </ol>
+                            </nav>
+                            
+                            <div class="row">
+                                <!-- 产品图片 -->
+                                <div class="col-md-6">
+                                    <div class="product-gallery">
+                                        <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="产品图片" class="img-fluid main-image">
+                                        <div class="product-thumbs">
+                                            <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="缩略图1" class="active">
+                                            <img src="https://images.unsplash.com/photo-1593266458478-e0b4e3c25094?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="缩略图2">
+                                            <img src="https://images.unsplash.com/photo-1498075702571-ecb018f3752d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="缩略图3">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 产品信息 -->
+                                <div class="col-md-6">
+                                    <h2>普通单张彩页</h2>
+                                    <p class="text-muted">传单、彩页、大海报、异形彩卡、超底价经济单张、超大尺寸单张</p>
+                                    
+                                    <div class="product-options">
+                                        <div class="option-group">
+                                            <div class="option-label">纸张选择：</div>
+                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                <label class="btn btn-outline-secondary option-btn active">
+                                                    <input type="radio" name="paper" checked> 157g铜版纸
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="paper"> 200g铜版纸
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="paper"> 250g铜版纸
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="paper"> 300g铜版纸
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="option-group">
+                                            <div class="option-label">尺寸大小：</div>
+                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                <label class="btn btn-outline-secondary option-btn active">
+                                                    <input type="radio" name="size" checked> A4(210x285mm)
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="size"> A5(148x210mm)
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="size"> A3(297x420mm)
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="size"> 自定义
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="option-group">
+                                            <div class="option-label">印刷工艺：</div>
+                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                <label class="btn btn-outline-secondary option-btn active">
+                                                    <input type="radio" name="craft" checked> 单面彩印
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="craft"> 双面彩印
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="craft"> 单面黑白
+                                                </label>
+                                                <label class="btn btn-outline-secondary option-btn">
+                                                    <input type="radio" name="craft"> 双面黑白
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="option-group">
+                                            <div class="option-label">印刷数量：</div>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-outline-secondary" type="button" id="decrease-qty">-</button>
+                                                </div>
+                                                <input type="text" class="form-control text-center" id="qty" value="100">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button" id="increase-qty">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="price-calculator">
+                                        <button class="btn btn-primary mb-3" id="calculate-price">计算价格</button>
+                                        <div class="price-result">
+                                            <p>总价: <span class="total-price">¥120.00</span></p>
+                                            <p>单价: ¥1.20/张</p>
+                                            <button class="btn btn-outline-secondary btn-sm">复制报价</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="product-actions">
+                                        <button class="btn btn-success btn-lg add-to-cart-btn">加入购物车</button>
+                                        <button class="btn btn-danger btn-lg add-to-cart-btn mt-2">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 产品描述 -->
+                            <div class="product-description">
+                                <ul class="nav nav-tabs description-tabs" id="descTabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="desc-tab" data-toggle="tab" href="#description" role="tab">产品描述</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="specs-tab" data-toggle="tab" href="#specifications" role="tab">规格参数</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="notice-tab" data-toggle="tab" href="#notices" role="tab">注意事项</a>
+                                    </li>
+                                </ul>
+                                
+                                <div class="tab-content" id="descTabsContent">
+                                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                                        <div class="p-3">
+                                            <h4>普通单张彩页</h4>
+                                            <p>传单、彩页、大海报、异形彩卡、超底价经济单张、超大尺寸单张等产品的印刷服务。</p>
+                                            <p>我们提供多种纸张选择，包括157g、200g、250g、300g铜版纸等，满足不同场景需求。</p>
+                                            <p>尺寸可以根据客户需求定制，包括标准A系列尺寸和自定义尺寸。</p>
+                                            <p>印刷工艺包括单面彩印、双面彩印、单面黑白、双面黑白等多种选择。</p>
+                                            <p>适用于海报、广告传单、宣传单页、活动宣传、促销广告等多种用途。</p>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="specifications" role="tabpanel">
+                                        <div class="p-3">
+                                            <h4>规格参数</h4>
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row" width="20%">纸张选择</th>
+                                                        <td>157g铜版纸、200g铜版纸、250g铜版纸、300g铜版纸</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">尺寸选择</th>
+                                                        <td>A4(210x285mm)、A5(148x210mm)、A3(297x420mm)、自定义尺寸</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">印刷工艺</th>
+                                                        <td>单面彩印、双面彩印、单面黑白、双面黑白</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">制作周期</th>
+                                                        <td>标准款1-3个工作日，特殊工艺3-5个工作日</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">最小起订量</th>
+                                                        <td>50张</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="notices" role="tabpanel">
+                                        <div class="p-3">
+                                            <h4>注意事项</h4>
+                                            <ol>
+                                                <li>下单前请确认尺寸及纸张类型，以免印刷不符合需求。</li>
+                                                <li>印刷文件请使用300dpi或更高分辨率的PDF、TIF或JPG文件。</li>
+                                                <li>印刷色彩使用CMYK模式，请注意转换以确保色彩一致性。</li>
+                                                <li>请预留3mm出血位，避免裁切误差导致的边缘问题。</li>
+                                                <li>大批量订单请提前与客服联系，以便安排生产。</li>
+                                                <li>特殊工艺或尺寸可能需要额外费用，请咨询客服。</li>
+                                                <li>交付周期为生产完成时间，不包含运输时间。</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="copyright">Inteli @2025 | 开发及技术支持 : 大锤科技有限公司</p>
+                <p class="icp">粤ICP备xxxxxx</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 各种模态框 (与index.html相同) -->
+    <!-- 模态框 - 登录 -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户登录</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>帐户登录</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>登录密码</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="form-group text-center">
+                            <a href="#" class="switch-form" data-target="#registerModal">还没有帐号？立即注册</a>
+                            <a href="#" class="switch-form ml-3" data-target="#resetPasswordModal">忘记密码？</a>
+                        </div>
+                        <div class="other-login">
+                            <p class="text-center">其他方式登录</p>
+                            <div class="social-login">
+                                <!-- 社交登录按钮 -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 购物车模态框 -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">购物车</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="cart-empty text-center">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                        <p>购物车空空如也！！</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">去确认购物车并结算</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 产品缩略图切换
+            $('.product-thumbs img').on('click', function() {
+                $('.product-thumbs img').removeClass('active');
+                $(this).addClass('active');
+                $('.main-image').attr('src', $(this).attr('src'));
+            });
+            
+            // 数量增减
+            $('#increase-qty').on('click', function() {
+                let qty = parseInt($('#qty').val());
+                $('#qty').val(qty + 1);
+            });
+            
+            $('#decrease-qty').on('click', function() {
+                let qty = parseInt($('#qty').val());
+                if (qty > 1) {
+                    $('#qty').val(qty - 1);
+                }
+            });
+            
+            // 加入购物车按钮
+            $('.add-to-cart-btn').on('click', function() {
+                const isNowBuy = $(this).text().trim() === '立即购买';
+                
+                // 获取产品信息
+                const productName = $('h2').text();
+                const paper = $('input[name="paper"]:checked').parent().text().trim();
+                const size = $('input[name="size"]:checked').parent().text().trim();
+                const craft = $('input[name="craft"]:checked').parent().text().trim();
+                const quantity = parseInt($('#qty').val());
+                const price = parseFloat($('.total-price').text().replace('¥', ''));
+                
+                // 添加到购物车
+                addToCart({
+                    name: productName,
+                    options: `${paper}, ${size}, ${craft}`,
+                    price: price / quantity,
+                    quantity: quantity
+                });
+                
+                if (isNowBuy) {
+                    // 如果是立即购买，跳转到结算页面
+                    window.location.href = 'checkout.html';
+                } else {
+                    // 显示通知
+                    showNotification('已添加到购物车');
+                }
+            });
+            
+            // 计算价格
+            $('#calculate-price').on('click', function() {
+                // 模拟价格计算，实际应用中应调用后端API
+                const paper = $('input[name="paper"]:checked').parent().text().trim();
+                const size = $('input[name="size"]:checked').parent().text().trim();
+                const craft = $('input[name="craft"]:checked').parent().text().trim();
+                const quantity = parseInt($('#qty').val());
+                
+                let basePrice = 0;
+                
+                // 根据纸张类型设置基础价格
+                if (paper.includes('157g')) basePrice = 0.8;
+                else if (paper.includes('200g')) basePrice = 1.0;
+                else if (paper.includes('250g')) basePrice = 1.2;
+                else if (paper.includes('300g')) basePrice = 1.5;
+                
+                // 根据尺寸调整价格
+                if (size.includes('A5')) basePrice *= 0.7;
+                else if (size.includes('A3')) basePrice *= 1.8;
+                else if (size.includes('自定义')) basePrice *= 1.5;
+                
+                // 根据工艺调整价格
+                if (craft.includes('双面彩印')) basePrice *= 1.6;
+                else if (craft.includes('单面黑白')) basePrice *= 0.7;
+                else if (craft.includes('双面黑白')) basePrice *= 1.2;
+                
+                // 根据数量调整总价
+                let totalPrice = basePrice * quantity;
+                
+                // 数量折扣
+                if (quantity >= 500) totalPrice *= 0.9;
+                else if (quantity >= 200) totalPrice *= 0.95;
+                
+                // 更新显示
+                $('.total-price').text('¥' + totalPrice.toFixed(2));
+                $('p:contains("单价")').text('单价: ¥' + basePrice.toFixed(2) + '/张');
+            });
+        });
+    </script>
+</body>
+</html>
